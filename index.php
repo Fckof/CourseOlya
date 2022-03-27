@@ -13,6 +13,7 @@ require_once("php_connection/connect.php");
 	<title>Списки студентов</title>
 </head>
 <body>
+	<!---------------------------------------------------------------------------------------- header -->
 <nav class="navbar navbar-expand-xxl navbar-dark bg-dark ">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.php">QR</a>
@@ -25,17 +26,49 @@ require_once("php_connection/connect.php");
         <button class="btn btn-outline-success ml-2" type="submit">Искать</button>
       </form>
     </div>
-	<a role="button" class=" btn btn-warning btn-lg d-flex justify-content-center " tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-				Admin
-					</a>
+	<?if(!isset($_SESSION['admin'])):?>
+		<a role="button" class=" btn btn-warning btn-lg d-flex justify-content-center " tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+					Admin
+		</a>
+	<?else:?>
+		<a  class=" btn btn-danger btn-lg d-flex justify-content-center " href="php_req/exit.php">
+				Выйти
+		</a>
+	<?endif;?>
   </div>
 </nav>
 
 	<div class="container container-lg container-fluid general_content ">
-
+<!----------------------------------------------------------------------------------- modals -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+  		<div class="modal-dialog modal-dialog-centered">
+			<form class="modal-content" action="php_req/change_qr_status.php" method="GET">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel3">Изменить статус QR</h5>
+					<button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+					<span aria-bs-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ">
+					
+					<div class="row mb-3">
+						<label for="inputPassword3" class="col-sm-2 col-form-label">ID студента</label>
+						<div class="col-sm-10">
+						<input type="number" name="change" class="form-control" id="inputPassword3">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+				<button type="submit" class="btn btn-success">Открыть</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					
+				</div>
+			</form>
+  		</div>
+	</div>
 	<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   		<div class="modal-dialog modal-dialog-centered">
-			<form class="modal-content" action="php_req/stat.php" method="GET">
+			<form class="modal-content" action="php_req/auth.php" method="GET">
 				<div class="modal-header">
 					<h5 class="modal-title" id="staticBackdropLabel2">Вход администратора</h5>
 					<button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
@@ -43,19 +76,18 @@ require_once("php_connection/connect.php");
 					</button>
 				</div>
 				<div class="modal-body ">
-  <div class="row mb-3">
-    <label for="inputEmail3" class="col-sm-2 col-form-label">Login</label>
-    <div class="col-sm-10">
-      <input type="input" name="login" class="form-control" id="inputEmail3">
-    </div>
-  </div>
-  <div class="row mb-3">
-    <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-    <div class="col-sm-10">
-      <input type="password" name="pass" class="form-control" id="inputPassword3">
-    </div>
-  </div>
-
+					<div class="row mb-3">
+						<label for="inputEmail3" class="col-sm-2 col-form-label">Login</label>
+						<div class="col-sm-10">
+						<input type="input" name="login" class="form-control" id="inputEmail3">
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+						<div class="col-sm-10">
+						<input type="password" name="pass" class="form-control" id="inputPassword3">
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 				<button type="submit" class="btn btn-success">Войти</button>
@@ -80,7 +112,8 @@ require_once("php_connection/connect.php");
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+					<button type="submit" class="btn btn-primary" >Искать</button>
 				</div>
 			</form>
   		</div>
@@ -107,12 +140,13 @@ require_once("php_connection/connect.php");
 			</form>
   		</div>
 	</div>
-		
+		<!---------------------------------------------------------------------- main --->
 		<div class="container container-fluid main_content">
 			<div class="welcome_block mt-4 mr-3">
 				<h1 class="logo">Добро пожаловать на сайт QR</h1>
 				<hr>
 				<h2>Здесь ведется учет студентов ФПМиВТ с информации о их вакцинации</h2>
+				<hr>
 				<span class="display-6">Вы можете:</span>
 				<a role="button" class=" btn btn-success btn-lg d-flex justify-content-center m-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
 				Просмотреть список студентов конкретной группы
@@ -129,11 +163,12 @@ require_once("php_connection/connect.php");
 					<?
 						if(isset($_SESSION['admin'])):
 					?>
-						<a role="button" class=" btn btn-success btn-lg d-flex justify-content-center m-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-				Изменить
+					<span class="display-6">Для Админа:</span>
+					<a role="button" class=" btn btn-success btn-lg d-flex justify-content-center m-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+						Изменить статус QR-кода
 					</a>
 					<a role="button" class=" btn btn-success btn-lg d-flex justify-content-center m-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-				Добавить
+						Добавить
 					</a>
 					<? endif;?>
 				</div>

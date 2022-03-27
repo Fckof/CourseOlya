@@ -1,4 +1,5 @@
 <?php
+session_start();
 require("../php_connection/connect.php");
 $id_g=$_GET["group_id"];
 $res=$conn->query("CALL `Группы`(".$id_g.");");
@@ -43,12 +44,15 @@ $r=$res->fetch_assoc();
 						</div>
 						<div class="col-sm">
 						Дата окончания QR
-						</div>
-					  </div>
-						';
+						</div>';
+						if(isset($_SESSION['admin'])){
+							print '<div class="col-sm">
+							</div>';}
+						  print '</div>
+							';
 				while($row=$res->fetch_assoc()){
 						echo '
-						<div class="row pb-1 btn-success">
+						<div class="row pb-1 pt-1 btn-success">
 						<div class="col-sm">
 						  '.$row["Фамилия"].'
 						</div>
@@ -66,9 +70,14 @@ $r=$res->fetch_assoc();
 						</div>
 						<div class="col-sm">
 						'.$row["Дата окончания QR"].'
-						</div>
-					  </div>
-						';
+						</div>';
+						if(isset($_SESSION['admin'])){
+							print '<div class="col-sm">
+							<form action="change_qr_status.php" method="GET">
+							<button type="submit" class="btn btn-warning" name="change" value="'.$row['id student'].'">Изменить</button>
+							</form>
+							</div>';}
+						  print '</div>';
 
 				}
 			?>
