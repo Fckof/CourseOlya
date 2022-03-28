@@ -4,6 +4,13 @@ $s=$_GET['change'];
 require("../php_connection/connect.php");
 $res=$conn->query("SELECT * FROM `qr_code` WHERE `id student`=$s");
 $row=$res->fetch_assoc();
+if($row<1){
+	exit('<div class="headr d-flex justify-content-between align-items-center">
+	<h1 class="m-2 mt-3">Такого студента нет</h1>
+	<a href="../index.php" class="back mr-2 btn btn-danger">Назад</a>
+	</div>');
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +33,8 @@ $row=$res->fetch_assoc();
 				<div class="row mb-3 mt-5 ">
 								<label for="input1" class="col-sm-2 col-form-label h1">ID студента</label>
 								<div class="col-sm-6 ">
-								<input type="text" name="id_st" class="form-control" id="input1"  value="<?echo $row['id student']?>">
+								<input type="text"  class="form-control" id="input1" disabled value="<?echo $row['id student']?>">
+								<input type="text" name="id_st" class="form-control" hidden id="input1" value="<?echo $row['id student']?>">
 								</div>
 				</div>
 				<div class="row mb-3 mt-5 ">

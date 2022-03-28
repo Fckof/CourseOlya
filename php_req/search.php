@@ -1,8 +1,9 @@
 <?php
+session_start();
 require_once("../php_connection/connect.php");
 $s=$_GET['search'];
 $s=trim($s);
-$res=$conn->query("SELECT  g.`Название группы`, s.`Фамилия`, s.`Имя`, s.`Отчество`, q.`Привит`, 
+$res=$conn->query("SELECT  s.`id student`, g.`Название группы`, s.`Фамилия`, s.`Имя`, s.`Отчество`, q.`Привит`, 
 q.`Переболел`, q.`Дата окончания QR` FROM `student` AS s JOIN `qr_code` AS q ON s.`id student` = q.`id student` 
 JOIN `group` AS g ON s.`id group` = g.`id group` WHERE s.`Фамилия` LIKE '%$s%' OR `s`.`Имя` LIKE '%$s%' OR s.`Отчество` 
 LIKE '%$s%'");
@@ -27,8 +28,7 @@ LIKE '%$s%'");
 		<a href="../index.php" class="back mr-2 btn btn-danger">Назад</a>
 	</div>
 	
-		
-		<div class="container container-fluid mb-2">
+	<div class="container container-fluid mb-2">
 			<?echo '
 						<div class="row pb-2 pt-3 border-bottom btn-primary">
 						<div class="col-sm">
@@ -48,12 +48,15 @@ LIKE '%$s%'");
 						</div>
 						<div class="col-sm">
 						Дата окончания QR
-						</div>
-					  </div>
-						';
+						</div>';
+						if(isset($_SESSION['admin'])){
+							print '<div class="col-sm">
+							</div>';}
+						  print '</div>
+							';
 				while($row=$res->fetch_assoc()){
 						echo '
-						<div class="row pb-1 btn-success">
+						<div class="row pb-1 pt-1 btn-success">
 						<div class="col-sm">
 						  '.$row["Фамилия"].'
 						</div>
@@ -71,9 +74,14 @@ LIKE '%$s%'");
 						</div>
 						<div class="col-sm">
 						'.$row["Дата окончания QR"].'
-						</div>
-					  </div>
-						';
+						</div>';
+						if(isset($_SESSION['admin'])){
+							print '<div class="col-sm">
+							<form action="change_qr_status.php" method="GET">
+							<button type="submit" class="btn btn-warning" name="change" value="'.$row['id student'].'">Изменить</button>
+							</form>
+							</div>';}
+						  print '</div>';
 
 				}
 			?>

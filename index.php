@@ -15,13 +15,14 @@ require_once("php_connection/connect.php");
 <body>
 	<!---------------------------------------------------------------------------------------- header -->
 <nav class="navbar navbar-expand-xxl navbar-dark bg-dark ">
-  <div class="container-fluid">
+  <div class="container-fluid justify-content-between">
+	  <div class="div">
     <a class="navbar-brand" href="index.php">QR</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button></div>
     <div class="collapse navbar-collapse container-fluid" id="navbarSupportedContent">
-      <form class="d-flex" action="php_req/search.php" method="GET">
+      <form class="d-flex m-1 " action="php_req/search.php" method="GET">
         <input class="form-control mr-2" type="search" placeholder="Поиск по ФИО" aria-label="Search" name="search">
         <button class="btn btn-outline-success ml-2" type="submit">Искать</button>
       </form>
@@ -40,6 +41,32 @@ require_once("php_connection/connect.php");
 
 	<div class="container container-lg container-fluid general_content ">
 <!----------------------------------------------------------------------------------- modals -->
+<div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+  		<div class="modal-dialog modal-dialog-centered">
+			<form class="modal-content" action="php_req/add_qr.php" method="GET">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel4">Добавить QR</h5>
+					<button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+					<span aria-bs-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ">
+					
+					<div class="row mb-3">
+						<label for="inputPassword3" class="col-sm-2 col-form-label">ID студента</label>
+						<div class="col-sm-10">
+						<input type="number" name="add" class="form-control" id="inputPassword3">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+				<button type="submit" class="btn btn-success">Открыть</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					
+				</div>
+			</form>
+  		</div>
+	</div>
 <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
   		<div class="modal-dialog modal-dialog-centered">
 			<form class="modal-content" action="php_req/change_qr_status.php" method="GET">
@@ -166,9 +193,6 @@ require_once("php_connection/connect.php");
 					<span class="display-6">Для Админа:</span>
 					<a role="button" class=" btn btn-success btn-lg d-flex justify-content-center m-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal3">
 						Изменить статус QR-кода
-					</a>
-					<a role="button" class=" btn btn-success btn-lg d-flex justify-content-center m-3" tabindex="-1" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-						Добавить
 					</a>
 					<? endif;?>
 				</div>
